@@ -60,7 +60,7 @@ router.post('/login', async (req, res, next) => {
   })
 
   // public facing API would specifiy how to send token, no standard, standard is just that tokens are used
-  // this will have front-end sending token within req body
+  // this will have front-end sending _token within req body
   // tested with insomnia
   router.get('/topsecret', ensureLoggedIn, async (req, res, next) => {
     try {
