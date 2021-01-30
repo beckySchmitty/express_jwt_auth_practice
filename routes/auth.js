@@ -46,7 +46,8 @@ router.post('/login', async (req, res, next) => {
     const user = results.rows[0];
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
-        return res.json({message: `Welcome back ${user.username}`})
+        const token = jwt.sign({username}, SECRET_KEY)
+        return res.json({message: `Welcome back ${user.username}`, token})
       }
     }
     throw new ExpressError("Invalid username/password", 400)
@@ -54,6 +55,19 @@ router.post('/login', async (req, res, next) => {
     return next(e)
   }
   })
+
+  // public facing API would specifiy how to send token, no standard, standard is just that tokens are used
+  // this will have front-end sending token within req body
+  // tested with insomnia
+  router.get('/topsecret', async (req, res, next) => {
+    try {
+      const token = req.body._token;
+      const payload = jwt.verify(token, SECRET_KEY);
+      return res.json({msg: "SIGNED IN"})
+    } catch(e) {
+      return next(new ExpressError("Please login first", 401))
+    }
+    })
   
 
 
