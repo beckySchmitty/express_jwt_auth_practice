@@ -1,0 +1,3 @@
+###Express App w/ Authorizatoin Practice 
+
+Practicing how to implement node bcrypt and JWT to ensure user authentication and authorization.
